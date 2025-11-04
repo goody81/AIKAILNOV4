@@ -1,0 +1,225 @@
+# System Configuration
+system:
+  name: "AIKAILNOV4"
+  version: "1.0.0"
+  debug: false
+  log_level: "INFO"
+  log_file: "logs/aikail.log"
+  max_threads: 10
+  timeout: 300
+
+# AI Configuration
+ai:
+  enabled: true
+  provider: "openai"  # Options: openai, huggingface, local
+  model: "gpt-4"
+  api_key: "${OPENAI_API_KEY}"  # Set via environment variable
+  temperature: 0.7
+  max_tokens: 2000
+  confidence_threshold: 0.75
+  fallback_to_rules: true
+
+# Database Configuration
+database:
+  type: "sqlite"  # Options: sqlite, postgresql, mysql
+  path: "data/aikail.db"
+  # For PostgreSQL/MySQL:
+  # host: "localhost"
+  # port: 5432
+  # username: "aikail"
+  # password: "${DB_PASSWORD}"
+  # database: "aikailnov4"
+  pool_size: 10
+  echo: false
+
+# Scanning Configuration
+scanning:
+  default_timeout: 300
+  max_retries: 3
+  retry_delay: 5
+  aggressive_mode: false
+  stealth_mode: true
+  rate_limit: 100  # requests per second
+  user_agent: "AIKAILNOV4/1.0 Security Scanner"
+  
+  # Port scanning
+  ports:
+    default_ports: "1-1000"
+    common_ports: [21, 22, 23, 25, 53, 80, 110, 143, 443, 445, 3306, 3389, 5432, 8080, 8443]
+    scan_method: "SYN"  # Options: SYN, TCP, UDP, NULL, FIN, XMAS
+  
+  # Web scanning
+  web:
+    follow_redirects: true
+    max_redirects: 5
+    verify_ssl: false
+    timeout: 30
+    crawl_depth: 3
+    max_pages: 1000
+
+# Module Configuration
+modules:
+  enabled:
+    - port_scanner
+    - vulnerability_scanner
+    - web_scanner
+    - network_analyzer
+    - exploit_framework
+    - password_cracker
+    - threat_intelligence
+  
+  port_scanner:
+    enabled: true
+    timeout: 30
+    max_concurrent: 100
+  
+  vulnerability_scanner:
+    enabled: true
+    database: "data/vulns.db"
+    update_interval: 86400  # 24 hours
+    cvss_threshold: 4.0
+  
+  web_scanner:
+    enabled: true
+    scan_for:
+      - sql_injection
+      - xss
+      - csrf
+      - lfi
+      - rfi
+      - command_injection
+      - xxe
+  
+  exploit_framework:
+    enabled: false  # Disabled by default for safety
+    require_confirmation: true
+    log_all_attempts: true
+
+# API Configuration
+api:
+  enabled: true
+  host: "0.0.0.0"
+  port: 8080
+  workers: 4
+  cors_enabled: true
+  cors_origins: ["*"]
+  rate_limit: "100/hour"
+  authentication:
+    enabled: true
+    type: "jwt"  # Options: jwt, api_key, basic
+    secret_key: "${API_SECRET_KEY}"
+    token_expiry: 3600  # 1 hour
+
+# Reporting Configuration
+reporting:
+  format: "html"  # Options: html, pdf, json, xml, markdown
+  output_dir: "./reports"
+  include_raw_data: false
+  include_screenshots: true
+  template: "default"
+  auto_generate: true
+  
+  sections:
+    - executive_summary
+    - methodology
+    - findings
+    - vulnerabilities
+    - recommendations
+    - technical_details
+    - appendix
+
+# Threat Intelligence
+threat_intelligence:
+  enabled: true
+  sources:
+    - "abuse.ch"
+    - "alienvault"
+    - "emergingthreats"
+    - "shodan"
+  update_interval: 3600  # 1 hour
+  cache_duration: 86400  # 24 hours
+  api_keys:
+    shodan: "${SHODAN_API_KEY}"
+    virustotal: "${VIRUSTOTAL_API_KEY}"
+
+# Notification Configuration
+notifications:
+  enabled: true
+  channels:
+    email:
+      enabled: false
+      smtp_host: "smtp.gmail.com"
+      smtp_port: 587
+      username: "${EMAIL_USERNAME}"
+      password: "${EMAIL_PASSWORD}"
+      from_address: "noreply@aikailnov4.com"
+      recipients: []
+    
+    slack:
+      enabled: false
+      webhook_url: "${SLACK_WEBHOOK_URL}"
+    
+    discord:
+      enabled: false
+      webhook_url: "${DISCORD_WEBHOOK_URL}"
+
+# Security Settings
+security:
+  encryption:
+    enabled: true
+    algorithm: "AES-256"
+    key: "${ENCRYPTION_KEY}"
+  
+  authentication:
+    password_min_length: 12
+    require_strong_passwords: true
+    session_timeout: 3600
+    max_login_attempts: 5
+    lockout_duration: 900  # 15 minutes
+  
+  audit:
+    enabled: true
+    log_file: "logs/audit.log"
+    log_all_requests: true
+    retain_days: 90
+
+# Performance Settings
+performance:
+  cache:
+    enabled: true
+    backend: "redis"  # Options: redis, memory, disk
+    ttl: 3600
+    max_size: 1000
+  
+  queue:
+    enabled: true
+    backend: "redis"
+    max_size: 10000
+  
+  workers:
+    min: 2
+    max: 10
+    auto_scale: true
+
+# Advanced Settings
+advanced:
+  proxy:
+    enabled: false
+    http: "${HTTP_PROXY}"
+    https: "${HTTPS_PROXY}"
+    no_proxy: "localhost,127.0.0.1"
+  
+  dns:
+    custom_servers:
+      - "8.8.8.8"
+      - "1.1.1.1"
+    timeout: 5
+  
+  user_agents:
+    rotation: true
+    custom_list: []
+  
+  evasion:
+    randomize_timing: true
+    randomize_order: true
+    fragment_packets: false
